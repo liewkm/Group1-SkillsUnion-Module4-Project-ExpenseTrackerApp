@@ -27,7 +27,7 @@ function ExpensesForm() {
           style={styles.rowInput}
           inputLabel="Amount"
           inputConfig={{
-            keyboardType: "decimal-point",
+            keyboardType: "decimal-pad",
             onChangeText: changeAmtHandler,
           }}
         />
