@@ -4,7 +4,7 @@
 
 import { createContext, useReducer } from 'react';
 
-import { ExpensesReducer } from '../reducers/ExpensesReducer';
+import ExpensesReducer from '../reducers/ExpensesReducer';
 
 // Example data
 const DUMMY_EXPENSES = [
