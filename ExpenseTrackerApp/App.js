@@ -15,7 +15,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { GlobalColors } from './utilities/colors';
-import ExpensesContextProvider from './store/expenses-context';
+import ExpensesContextProvider from './store/ExpensesContext';
 import ExpensesOverview from './screens/ExpensesOverview';
 import ManageExpense from './screens/ManageExpense';
 
