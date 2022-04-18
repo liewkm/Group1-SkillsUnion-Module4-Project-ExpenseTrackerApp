@@ -1,13 +1,33 @@
 /*----  
-  Icon button '+' for adding new expense
+  Icon button for adding new expense
 ----*/
 
-import { Text } from 'react-native'
+import { Pressable, View, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-function IconButton() {
+function IconButton({ icon, color, size, onPress }) {
   return (
-    <Text>IconButton</Text>
-  )
+    <Pressable
+      onPress={onPress}
+      styles={({ pressed }) => {
+        pressed && styles.pressed;
+      }}
+    >
+      <View style={styles.container}>
+        <Ionicons name={icon} color={color} size={size} />
+      </View>
+    </Pressable>
+  );
 }
 
-export default IconButton
+export default IconButton;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 6,
+    marginHorizontal: 8,
+    marginVertical: 2,
+    borderRadius: 12,
+  },
+  pressed: { opacity: 0.7 },
+});

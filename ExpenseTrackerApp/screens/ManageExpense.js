@@ -2,12 +2,18 @@
   Manage Expense screen
 ----*/
 
-import { Text } from 'react-native'
+// Leslie: add button for AddExpense ExpenseForm
+
+import { Text, View } from "react-native";
+import ExpensesForm from "../components/ExpensesInput/ExpensesForm";
 
 function ManageExpense() {
   return (
-    <Text>ManageExpense</Text>
-  )
+    <View>
+      <Text>ManageExpense</Text>
+      <ExpensesForm />
+    </View>
+  );
 }
 
-export default ManageExpense
+export default ManageExpense;
