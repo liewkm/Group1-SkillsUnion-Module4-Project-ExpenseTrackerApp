@@ -5,11 +5,16 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { GlobalColors } from "../../utilities/colors";
 
-function Input({ inputLabel, inputConfig }) {
+function Input({ inputLabel, inputConfig, style }) {
+  const inputStyles = [styles.input];
+  if (inputConfig.multiline) {
+    inputStyles.push(styles.inputMultiline);
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text style={styles.label}>{inputLabel}</Text>
-      <TextInput style={styles.input} {...inputConfig} />
+      <TextInput style={inputStyles} {...inputConfig} />
     </View>
   );
 }
@@ -17,10 +22,10 @@ function Input({ inputLabel, inputConfig }) {
 export default Input;
 
 const styles = StyleSheet.create({
-  container: { 
-    
-    marginHorizontal: 6, 
-    marginVertical: 8 },
+  container: {
+    marginHorizontal: 6,
+    marginVertical: 8,
+  },
   label: {
     fontSize: 16,
     marginVertical: 8,
@@ -32,6 +37,10 @@ const styles = StyleSheet.create({
     color: GlobalColors.primary800,
     padding: 8,
     borderRadius: 4,
+  },
 
+  inputMultiline: {
+    minHeight: 150,
+    textAlignVertical: "top",
   },
 });
