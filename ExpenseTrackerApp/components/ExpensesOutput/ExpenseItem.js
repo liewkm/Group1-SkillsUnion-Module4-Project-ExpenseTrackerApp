@@ -15,8 +15,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { GlobalStyles } from '../../constants/styles';
-import { getFormattedDate } from '../../util/date';
+import { GlobalColors } from '../../utilities/colors';
+import { getFormattedDate } from '../../utilities/helpers';
 
 function ExpenseItem({ id, description, amount, date }) {
   const navigation = useNavigation();
@@ -56,18 +56,18 @@ const styles = StyleSheet.create({
   expenseItem: {
     padding: 12,
     marginVertical: 8,
-    backgroundColor: GlobalStyles.colors.primary500,
+    backgroundColor: GlobalColors.primary500,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderRadius: 6,
     elevation: 3,
-    shadowColor: GlobalStyles.colors.gray500,
+    shadowColor: GlobalColors.gray500,
     shadowRadius: 4,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
   },
   textBase: {
-    color: GlobalStyles.colors.primary50,
+    color: GlobalColors.primary50,
   },
   description: {
     fontSize: 16,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     minWidth: 80,
   },
   amount: {
-    color: GlobalStyles.colors.primary500,
+    color: GlobalColors.primary500,
     fontWeight: 'bold',
   },
 });

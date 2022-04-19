@@ -14,7 +14,7 @@
 
 import { StyleSheet, Text, View } from 'react-native';
 
-import { GlobalStyles } from '../../constants/styles';
+import { GlobalColors } from '../../utilities/colors';
 import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 24,
     paddingBottom: 0,
-    backgroundColor: GlobalStyles.colors.primary700,
+    backgroundColor: GlobalColors.primary700,
   },
   infoText: {
     color: 'white',
