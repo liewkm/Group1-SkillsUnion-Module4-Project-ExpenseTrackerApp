@@ -7,9 +7,10 @@ import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { ExpensesContext } from '../store/ExpensesContext';
 
 function AllExpenses() {
+  const { expenses } = useContext(ExpensesContext)
   return (
     <ExpensesOutput 
-      expenses={expenses.expenses}
+      expenses={expenses}
       expensesPeriod='Total'
       fallbackText='No Expenses Yet.'
       />
