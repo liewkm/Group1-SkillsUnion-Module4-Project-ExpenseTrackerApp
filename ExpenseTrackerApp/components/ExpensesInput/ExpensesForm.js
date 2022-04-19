@@ -4,10 +4,11 @@
 
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import Button from "../commonUI/Button.js";
 import { GlobalColors } from "../../utilities/colors";
 import Input from "./Input";
 
-function ExpensesForm() {
+function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
   const [inputs, setInputs] = useState({
     date: "",
     amount: "",
@@ -22,9 +23,21 @@ function ExpensesForm() {
 
   console.log("Obj inputs", inputs);
 
+  const submitHandler = () => {
+    const data = {
+      date: new Date(inputs.date),
+      amount: inputs.amount,
+      description: inputs.description,
+    };
+    onSubmit(data);
+
+    console.log("Obj onSubmit", data);
+    console.log("submitBtnLabel: ", submitBtnLabel);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}> Input Expense</Text>
+      <Text style={styles.title}>Expense</Text>
 
       <View style={styles.row}>
         <Input
@@ -57,6 +70,16 @@ function ExpensesForm() {
           value: inputs.description,
         }}
       />
+
+      <View style={styles.buttonRow}>
+        {/* <Text>CANCEL</Text>          */}
+        <Button style={styles.button} onPress={onCancel} mode="flat">
+          CANCEL
+        </Button>
+        <Button style={styles.button} onPress={submitHandler}>
+          {submitBtnLabel}
+        </Button>
+      </View>
     </View>
   );
 }
@@ -64,16 +87,26 @@ function ExpensesForm() {
 export default ExpensesForm;
 
 const styles = StyleSheet.create({
-  container: { marginTop: 60 },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: GlobalColors.primary100,
-  },
+  container: { marginTop: 40 },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   rowInput: { flex: 1 },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: GlobalColors.primary50,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    minWidth: 130,
+    marginHorizontal: 16,
+    marginVertical: 8,
+  },
 });
