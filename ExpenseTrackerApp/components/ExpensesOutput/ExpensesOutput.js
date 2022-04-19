@@ -6,41 +6,54 @@ import { View } from "react-native";
 import ExpensesList from "./ExpensesList";
 import ExpensesSummary from "./ExpensesSummary";
 
-const DUMMY_EXPENSES = [
-  {
-    id: 'e1',
-    desciption: 'iPhone',
-    amount: 1900.90,
-    date: new Date('2022-04-18')
-  },
-  {
-    id: 'e2',
-    desciption: 'Macbook',
-    amount: 1400.00,
-    date: new Date('2021-12-18')
-  },
-  {
-    id: 'e3',
-    desciption: 'Apple Watch',
-    amount: 299.70,
-    date: new Date('2022-01-10')
-  },
-  {
-    id: 'e4',
-    desciption: 'Shoes',
-    amount: 79.90,
-    date: new Date('2022-04-16')
-  }
-]
+// import { Text } from 'react-native'
 
-function ExpensesOutput({ expenses, expensesPeriod }) {
-  // expenses parameter is an array of objects with amount, desc & date.
+// function ExpensesOutput() {
+//   return (
+//     <Text>ExpensesOutput</Text>
+//   )
+// }
+
+// export default ExpensesOutput
+
+import { StyleSheet, Text, View } from 'react-native';
+
+import { GlobalColors } from '../../utilities/colors';
+import ExpensesList from './ExpensesList';
+import ExpensesSummary from './ExpensesSummary';
+
+function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
+  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+  if (expenses.length > 0) {
+    content = <ExpensesList expenses={expenses} />;
+  }
+
   return (
-    <View>
+    <View style={styles.container}>
       <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-      <ExpensesList />
+      {content}
     </View>
   );
 }
 
 export default ExpensesOutput;
+<<<<<<< HEAD
+=======
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 0,
+    backgroundColor: GlobalColors.primary700,
+  },
+  infoText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 32,
+  },
+});
+>>>>>>> cb9c1de6a18624ea457215db4455adeec7c10864

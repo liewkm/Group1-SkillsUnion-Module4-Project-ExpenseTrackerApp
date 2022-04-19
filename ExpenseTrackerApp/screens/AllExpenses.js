@@ -7,8 +7,7 @@ import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 import { ExpensesContext } from '../store/ExpensesContext';
 
 function AllExpenses() {
-  const { expense } = useContext();
-
+  const { expenses } = useContext(ExpensesContext)
   return (
     <ExpensesOutput 
       expenses={expenses}
