@@ -2,12 +2,18 @@
   All Expenses screen
 ----*/
 
-import { Text } from 'react-native'
+import { useContext } from 'react';
+import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
+import { ExpensesContext } from '../store/ExpensesContext';
 
 function AllExpenses() {
   return (
-    <Text>AllExpenses</Text>
-  )
+    <ExpensesOutput 
+      expenses={expenses.expenses}
+      expensesPeriod='Total'
+      fallbackText='No Expenses Yet.'
+      />
+  );
 }
 
-export default AllExpenses
+export default AllExpenses;
