@@ -4,10 +4,13 @@ import { ExpensesContext } from '../store/ExpensesContext';
 import { getDateMinusDays } from '../utilities/helpers';
 
 function RecentExpenses() {
-  const expenses = useContext(ExpensesContext);
+  const { expenses, dispatch } = useContext(ExpensesContext);
 
-  console.log(expenses);
-
+  const recentExpenses = expenses.filter((expense) => {
+    const today = new Date();
+    const date7DaysAgo = getDateMinusDays(today, 7);
+  });
+  
   // const recentExpenses = expenses.filter((expense) => {
   //   const today = new Date();
   //   const date7DaysAgo = getDateMinusDays(today, 7);

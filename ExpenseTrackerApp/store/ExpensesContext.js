@@ -66,4 +66,4 @@ function ExpensesContextProvider({ children }) {
   )
 }
 
-export default ExpensesContextProvider
+export default ExpensesContextProvider;
