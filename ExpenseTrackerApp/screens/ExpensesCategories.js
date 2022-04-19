@@ -1,9 +1,12 @@
-import { Text } from 'react-native';
+import { View, Text } from "react-native";
+
+// Liew's comment: Confirm whether ExpenseForm has Category Input or not.
 
 function ExpensesCategories() {
-    return (
-        <Text>This is Expenses Categories screen.</Text>
-    )
+  return;
+  <View>
+    <Text>This is Expenses Categories screen.</Text>
+  </View>;
 }
 
 export default ExpensesCategories;
