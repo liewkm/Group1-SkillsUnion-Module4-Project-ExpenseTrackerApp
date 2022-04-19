@@ -1,18 +1,24 @@
 /*----  
   Expense input form 
 ----*/
-
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
+
 import Button from "../commonUI/Button.js";
 import { GlobalColors } from "../../utilities/colors";
+import { getFormattedDate } from "../../utilities/helpers.js";
 import Input from "./Input";
 
-function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
+function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
+  const [validAmount, setValidAmount] = useState(false);
+  const [validDate, setValidDate] = useState(false);
+  const [validDescp, setValidDescp] = useState(false);
+  const [formNotValid, setFormNotValid] = useState(false);
+
   const [inputs, setInputs] = useState({
-    date: "",
-    amount: "",
-    description: "",
+    date: defaultValues ? getFormattedDate(defaultValues.date) : "",
+    amount: defaultValues ? defaultValues.amount.toString() : "",
+    description: defaultValues ? defaultValues.description : "",
   });
 
   const inputsChangeHandler = (inputType, enterValue) => {
@@ -21,20 +27,36 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
     });
   };
 
-  console.log("Obj inputs", inputs);
+  // console.log("Obj inputs", inputs);
 
   const submitHandler = () => {
+    setFormNotValid(false);
     const data = {
       date: new Date(inputs.date),
-      amount: inputs.amount,
+      amount: +inputs.amount, // + converts to number
       description: inputs.description,
     };
-    onSubmit(data);
 
-    console.log("Obj onSubmit", data);
-    console.log("submitBtnLabel: ", submitBtnLabel);
+    setValidAmount(!isNaN(data.amount) && data.amount > 0);
+    setValidDate(data.date.toString() !== "Invalid Date");
+    setValidDescp(data.description.trim().length > 0);
+
+    // const validAmount = !isNaN(data.amount) && data.amount > 0;
+    // const validDate = data.date.toString() !== "Invalid Date";
+    // const validDescp = data.description.trim().length > 0;
+
+    console.log(validDate, validAmount, validDescp);
+
+    if (validDate && validAmount && validDescp) {
+      console.log("Obj onSubmit", data);
+      onSubmit(data);
+    } else {
+      // Alert.alert('Invalid Entry, Please Check Entry Again!')
+      setFormNotValid(true);
+      console.log("formNotValid: ", formNotValid);
+    }
   };
-
+  // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Expense</Text>
@@ -44,7 +66,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
           style={styles.rowInput}
           inputLabel="Date"
           inputConfig={{
-            placeholder: "DD-MM-YYYY",
+            placeholder: "YYYY-MM-DD",
             maxLength: 10,
             keyboardType: "number-pad",
             onChangeText: inputsChangeHandler.bind(this, "date"),
@@ -72,7 +94,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
       />
 
       <View style={styles.buttonRow}>
-        {/* <Text>CANCEL</Text>          */}
         <Button style={styles.button} onPress={onCancel} mode="flat">
           CANCEL
         </Button>
@@ -80,6 +101,12 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel }) {
           {submitBtnLabel}
         </Button>
       </View>
+
+      {formNotValid && (
+        <Text style={styles.errorOutput}>
+          Invalid Entry, Please Check Entry Again! {formNotValid}
+        </Text>
+      )}
     </View>
   );
 }
@@ -108,5 +135,12 @@ const styles = StyleSheet.create({
     minWidth: 130,
     marginHorizontal: 16,
     marginVertical: 8,
+  },
+  errorOutput: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 8,
+    textAlign: "center",
+    color: GlobalColors.error50,
   },
 });
