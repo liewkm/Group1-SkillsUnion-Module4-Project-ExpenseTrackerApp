@@ -1,46 +1,10 @@
-/*----  
-  Expense input form 
-----*/
-import { useState } from "react";
-import { Platform, View, Text, StyleSheet, Alert } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
-import { GlobalColors } from "../../utilities/colors";
-import { getFormattedDate } from "../../utilities/helpers.js";
-import Button from "../commonUI/Button.js";
-import Input from "./Input";
 
 function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
-  const [validAmount, setValidAmount] = useState(true);
-  const [validDate, setValidDate] = useState(true);
-  const [validDescp, setValidDescp] = useState(true);
+  const [validAmount, setValidAmount] = useState(false);
+  const [validDate, setValidDate] = useState(false);
+  const [validDescp, setValidDescp] = useState(false);
   const [formNotValid, setFormNotValid] = useState(false);
-
-  ///////////////// DatePicker
-
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
-
-  const onChange = (e, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "android");
-
-    console.log(currentDate, date)
-    setDate(currentDate);
-
-    let tempDate = new Date(currentDate);
-    // setText(tempDate);
-    console.log("tempDate", typeof tempDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  ///////////////// DatePicker
 
   const [inputs, setInputs] = useState({
     date: defaultValues ? getFormattedDate(defaultValues.date) : "",
@@ -53,8 +17,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       return { ...current, [inputType]: enterValue };
     });
   };
-  // console.log("Obj inputs", inputs);
 
+  // console.log("Obj inputs", inputs);
   const submitHandler = () => {
     setFormNotValid(false);
     const data = {
@@ -85,33 +49,32 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
-      <Button style={styles.button} onPress={() => showMode('date')}>
-        Date Picker
-      </Button>
-
-      {show && <DateTimePicker 
-      testID="dateTimePicker"
-      value={date}
-      mode={mode}
-      is24Hour={true}
-      display='default'
-      onChange={onChange}
-      
-      />}
-
-      <Text style={styles.title}>Expense: {text}</Text>
+      <Text style={styles.title}>Expense</Text>{" "}
       <View style={styles.row}>
-        <Input
-          style={styles.rowInput}
-          inputLabel="Date"
-          inputConfig={{
-            placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            keyboardType: "number-pad",
-            onChangeText: inputsChangeHandler.bind(this, "date"),
-            value: inputs.date,
+        
+        <DatePicker
+          style={styles.datePickerStyle}
+          date={Date} // Initial date from state
+          mode="Date" // The enum of date, datetime and time
+          placeholder="select date"
+          format="DD-MM-YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              //display: 'none',
+              position: "absolute",
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateInput: {
+              marginLeft: 36,
+            },
           }}
-          invalid={!validDate}
+          onDateChange={(date) => {
+            setDate(date);
+          }}
         />
         <Input
           style={styles.rowInput}
@@ -121,10 +84,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
             onChangeText: inputsChangeHandler.bind(this, "amount"),
             value: inputs.amount,
           }}
-          invalid={!validAmount}
         />
-      </View>
-
+      </View>{" "}
       <Input
         inputLabel="Description"
         inputConfig={{
@@ -132,9 +93,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           onChangeText: inputsChangeHandler.bind(this, "description"),
           value: inputs.description,
         }}
-        invalid={!validDescp}
-      />
-
+      />{" "}
       <View style={styles.buttonRow}>
         <Button style={styles.button} onPress={onCancel} mode="flat">
           CANCEL
@@ -142,8 +101,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         <Button style={styles.button} onPress={submitHandler}>
           {submitBtnLabel}
         </Button>
-      </View>
-
+      </View>{" "}
       {formNotValid && (
         <Text style={styles.errorOutput}>
           Invalid Entry, Please Check Entry Again! {formNotValid}
@@ -154,7 +112,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 }
 
 export default ExpensesForm;
-
 const styles = StyleSheet.create({
   container: { marginTop: 40 },
   row: {

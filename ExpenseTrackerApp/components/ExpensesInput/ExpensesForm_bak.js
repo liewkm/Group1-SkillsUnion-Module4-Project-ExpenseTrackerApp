@@ -2,7 +2,7 @@
   Expense input form 
 ----*/
 import { useState } from "react";
-import { Platform, View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { GlobalColors } from "../../utilities/colors";
@@ -16,32 +16,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validDescp, setValidDescp] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
 
-  ///////////////// DatePicker
-
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
-
-  const onChange = (e, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "android");
-
-    console.log(currentDate, date)
-    setDate(currentDate);
-
-    let tempDate = new Date(currentDate);
-    // setText(tempDate);
-    console.log("tempDate", typeof tempDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  ///////////////// DatePicker
-
   const [inputs, setInputs] = useState({
     date: defaultValues ? getFormattedDate(defaultValues.date) : "",
     amount: defaultValues ? defaultValues.amount.toString() : "",
@@ -53,6 +27,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       return { ...current, [inputType]: enterValue };
     });
   };
+
   // console.log("Obj inputs", inputs);
 
   const submitHandler = () => {
@@ -85,21 +60,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
-      <Button style={styles.button} onPress={() => showMode('date')}>
-        Date Picker
-      </Button>
+      <Text style={styles.title}>Expense</Text>
 
-      {show && <DateTimePicker 
-      testID="dateTimePicker"
-      value={date}
-      mode={mode}
-      is24Hour={true}
-      display='default'
-      onChange={onChange}
-      
-      />}
-
-      <Text style={styles.title}>Expense: {text}</Text>
       <View style={styles.row}>
         <Input
           style={styles.rowInput}
