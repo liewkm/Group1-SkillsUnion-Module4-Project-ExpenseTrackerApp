@@ -17,33 +17,16 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [formNotValid, setFormNotValid] = useState(false);
 
   ///////////////// DatePicker
-
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
+  const [mode, setMode] = useState();
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
-
-  const onChange = (e, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "android");
-
-    console.log(currentDate, date)
-    setDate(currentDate);
-
-    let tempDate = new Date(currentDate);
-    // setText(tempDate);
-    console.log("tempDate", typeof tempDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
+  const [text, setText] = useState(["Empty"]);
   ///////////////// DatePicker
 
   const [inputs, setInputs] = useState({
-    date: defaultValues ? getFormattedDate(defaultValues.date) : "",
+    date: defaultValues
+      ? getFormattedDate(defaultValues.date)
+      : getFormattedDate(date),
     amount: defaultValues ? defaultValues.amount.toString() : "",
     description: defaultValues ? defaultValues.description : "",
   });
@@ -82,30 +65,60 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     }
   };
 
+  ///////////////// DatePicker
+  const onChange = (event, selectedDate) => {
+    // console.log("\nevent: ", e);
+    const currentDate = selectedDate || date;
+    // setShow(Platform.OS === "android");
+
+    setDate(currentDate);
+
+    let tempDate = getFormattedDate(currentDate);
+    setText(tempDate);
+
+    console.log("currentDate, date: ", currentDate, date);
+    console.log("tempDate: ", tempDate);
+
+    setInputs((current) => {
+      return { ...current, ["date"]: tempDate };
+    });
+
+    setShow(false);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+  ///////////////// DatePicker
+
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
-      <Button style={styles.button} onPress={() => showMode('date')}>
+      <Text style={styles.title}>Expense</Text>
+
+      <Button style={styles.button} onPress={() => showMode("date")}>
         Date Picker
       </Button>
 
-      {show && <DateTimePicker 
-      testID="dateTimePicker"
-      value={date}
-      mode={mode}
-      is24Hour={true}
-      display='default'
-      onChange={onChange}
-      
-      />}
+      {show && (
+        <DateTimePicker
+          // testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          display="default"
+          onChange={onChange}
+        />
+      )}
 
-      <Text style={styles.title}>Expense: {text}</Text>
+      <Text style={styles.title}>{text}</Text>
+
       <View style={styles.row}>
         <Input
           style={styles.rowInput}
           inputLabel="Date"
           inputConfig={{
-            placeholder: "YYYY-MM-DD",
+            // placeholder: "YYYY-MM-DD",
             maxLength: 10,
             keyboardType: "number-pad",
             onChangeText: inputsChangeHandler.bind(this, "date"),
