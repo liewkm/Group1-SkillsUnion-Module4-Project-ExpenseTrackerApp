@@ -68,22 +68,19 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   ///////////////// DatePicker
   const onChange = (event, selectedDate) => {
     // console.log("\nevent: ", e);
+    setShow(false);
     const currentDate = selectedDate || date;
-    // setShow(Platform.OS === "android");
-
-    setDate(currentDate);
 
     let tempDate = getFormattedDate(currentDate);
-    setText(tempDate);
-
-    console.log("currentDate, date: ", currentDate, date);
-    console.log("tempDate: ", tempDate);
 
     setInputs((current) => {
       return { ...current, ["date"]: tempDate };
     });
 
-    setShow(false);
+    setDate(currentDate);
+
+    setText(tempDate);
+    console.log("tempDate, date: ", tempDate, date);
   };
 
   const showMode = (currentMode) => {
