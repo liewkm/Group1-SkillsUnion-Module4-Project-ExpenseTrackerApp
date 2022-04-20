@@ -12,12 +12,14 @@ function Input({ inputLabel, inputConfig, style, invalid }) {
   }
 
   if (invalid) {
-    inputStyles.push(styles.invalidInput);
+    inputStyles.push(styles.invalidEntry);
   }
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.label}>{inputLabel}</Text>
+      <Text style={[styles.label, styles.invalidEntry && invalid]}>
+        {inputLabel}
+      </Text>
       <TextInput style={inputStyles} {...inputConfig} />
     </View>
   );
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
 
-  invalidInput: {
+  invalidEntry: {
     backgroundColor: GlobalColors.error50,
   },
 });

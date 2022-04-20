@@ -10,9 +10,9 @@ import { getFormattedDate } from "../../utilities/helpers.js";
 import Input from "./Input";
 
 function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
-  const [validAmount, setValidAmount] = useState(false);
-  const [validDate, setValidDate] = useState(false);
-  const [validDescp, setValidDescp] = useState(false);
+  const [validAmount, setValidAmount] = useState(true);
+  const [validDate, setValidDate] = useState(true);
+  const [validDescp, setValidDescp] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -37,13 +37,13 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       description: inputs.description,
     };
 
-    setValidAmount(!isNaN(data.amount) && data.amount > 0);
-    setValidDate(data.date.toString() !== "Invalid Date");
-    setValidDescp(data.description.trim().length > 0);
+    const validAmount = !isNaN(data.amount) && data.amount > 0;
+    const validDate = data.date.toString() !== "Invalid Date";
+    const validDescp = data.description.trim().length > 0;
 
-    // const validAmount = !isNaN(data.amount) && data.amount > 0;
-    // const validDate = data.date.toString() !== "Invalid Date";
-    // const validDescp = data.description.trim().length > 0;
+    setValidAmount(validAmount);
+    setValidDate(validDate);
+    setValidDescp(validDescp);
 
     console.log(validDate, validAmount, validDescp);
 
@@ -53,9 +53,9 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     } else {
       // Alert.alert('Invalid Entry, Please Check Entry Again!')
       setFormNotValid(true);
-      console.log("formNotValid: ", formNotValid);
     }
   };
+
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
@@ -72,6 +72,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
             onChangeText: inputsChangeHandler.bind(this, "date"),
             value: inputs.date,
           }}
+          invalid={!validDate}
         />
         <Input
           style={styles.rowInput}
@@ -81,6 +82,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
             onChangeText: inputsChangeHandler.bind(this, "amount"),
             value: inputs.amount,
           }}
+          invalid={!validAmount}
         />
       </View>
 
@@ -91,6 +93,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           onChangeText: inputsChangeHandler.bind(this, "description"),
           value: inputs.description,
         }}
+        invalid={!validDescp}
       />
 
       <View style={styles.buttonRow}>
