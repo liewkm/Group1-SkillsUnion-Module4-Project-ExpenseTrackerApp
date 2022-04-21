@@ -11,7 +11,8 @@ import {
   Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import PickerSelect from "react-native-picker-select";
+// import PickerSelect from "react-native-picker-select";
+import { Picker } from '@react-native-picker/picker';
 
 import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
@@ -139,8 +140,25 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
       {/* display DatePicker input */}
       {/* <Text style={styles.title}>{text}</Text> */}
+      <Picker
+        selectedValue={category}
+        style={{color: 'white'}}
+        dropdownIconColor={'white'}
+        prompt={'Please select category:'}
+        onValueChange={(category) => setCategory(category)}
+      >
+        <Picker.Item label="Clothing" value="Clothing" />
+        <Picker.Item label="Computing Hardware" value="Computing Hardware" />
+        <Picker.Item label="Food" value="Food" />
+        <Picker.Item label="Hobby" value="Hobby" />
+        <Picker.Item label="Household" value="Household" />
+        <Picker.Item label="Stationary" value="Stationary" />
+        <Picker.Item label="Social" value="Social" />
+        <Picker.Item label="Transport" value="Transport" />
+      </Picker>    
 
-      <PickerSelect
+
+      {/* <PickerSelect
         onValueChange={(category) => setCategory(category)}
         placeholder={{
           label: "Select Expense Category",
@@ -158,7 +176,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           { label: "Transport", value: "Transport" },
         ]}
         style={pickerSelectStyles}
-      />
+      /> */}
 
       <Input
         inputLabel="Description"
