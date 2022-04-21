@@ -76,7 +76,8 @@ function ManageExpense({ route, navigation }) {
         <View style={styles.deleteContainer}>
           <IconButton
             icon="trash"
-            color={GlobalColors.error500}
+            // color={GlobalColors.error500}
+            color={GlobalColors.primary50}
             size={38}
             onPress={deleteExpenseHandler}
           />
