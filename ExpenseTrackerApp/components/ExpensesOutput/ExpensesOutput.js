@@ -27,6 +27,7 @@ import ExpensesSummary from './ExpensesSummary';
 function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   const [pickerValue, setPickerValue] = useState(null)
   const [pickerItems, setPickerItems] = useState([])
+  const [filtered, setFiltered] = useState([...expenses]);
 
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
@@ -49,6 +50,7 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   
   useEffect(() => {
     console.log('ExpensesOutput: pickerValue', pickerValue);
+    const filteredCategoryItem = expenses.filter(expense => expense.category === pickerValue)
   }, [pickerValue])
 
   return (
