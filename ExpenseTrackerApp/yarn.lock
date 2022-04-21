@@ -1339,6 +1339,11 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-picker/picker@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.2.1.tgz#32b9f540d8e88a73d8856f73cca88251cecb9614"
+  integrity sha512-EC7yv22QLHlTfnbC1ez9IUdXTOh1W31x96Oir0PfskSGFFJMWWdLTg4VrcE2DsGLzbfjjkBk123c173vf2a5MQ==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -5347,11 +5352,6 @@ uuid@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmjs.org/uuid/-/uuid-7.0.3.tgz"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
-
-uuid@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 vary@~1.1.2:
   version "1.1.2"

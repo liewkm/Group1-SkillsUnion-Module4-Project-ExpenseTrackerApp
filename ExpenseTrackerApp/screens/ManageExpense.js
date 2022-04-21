@@ -4,14 +4,24 @@
 
 // Leslie: add button for AddExpense ExpenseForm
 // CP: Added ManageExpense
+import { LogBox } from 'react-native';
 
-import { useContext, useLayoutEffect } from "react";
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+import { useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import ExpensesForm from "../components/ExpensesInput/ExpensesForm";
 import IconButton from "../components/commonUI/IconButton";
 import { ExpensesContext } from "./../store/ExpensesContext";
 import { GlobalColors } from "../utilities/colors";
+import {
+  REMOVE_EXPENSE,
+  EDIT_EXPENSE,
+  ADD_EXPENSE,
+} from "../reducers/ExpensesReducer";
 
 function ManageExpense({ route, navigation }) {
   const { expenses, dispatch } = useContext(ExpensesContext);
@@ -21,7 +31,7 @@ function ManageExpense({ route, navigation }) {
 
   const selectedExpense = expenses.find((exp) => exp.id === editedExpenseId);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
     });
@@ -32,25 +42,25 @@ function ManageExpense({ route, navigation }) {
   };
 
   const confirmHandler = (expenseData) => {
-    ////
-    console.log("isEditing : ", isEditing);
-    ////
+    // console.log("isEditing : ", isEditing);
+    console.log("expenseData : ", expenseData);
+
     if (isEditing) {
       dispatch({
-        type: "UPDATE",
+        type: EDIT_EXPENSE,
         payload: {
           id: editedExpenseId,
           data: expenseData,
         },
       });
     } else {
-      dispatch({ type: "ADD", payload: expenseData });
+      dispatch({ type: ADD_EXPENSE, payload: expenseData });
     }
     navigation.goBack();
   };
 
   const deleteExpenseHandler = () => {
-    dispatch({ type: "DELETE", payload: editedExpenseId });
+    dispatch({ type: REMOVE_EXPENSE, payload: editedExpenseId });
     navigation.goBack();
   };
 
@@ -58,8 +68,8 @@ function ManageExpense({ route, navigation }) {
     <View style={styles.container}>
       <ExpensesForm
         submitBtnLabel={isEditing ? "UPDATE" : "ADD"}
-        onSubmit={confirmHandler}
         onCancel={cancelHandler}
+        onSubmit={confirmHandler}
         defaultValues={selectedExpense}
       />
       {isEditing && (
