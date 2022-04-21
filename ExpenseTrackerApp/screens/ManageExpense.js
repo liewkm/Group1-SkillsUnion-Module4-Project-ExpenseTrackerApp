@@ -4,8 +4,13 @@
 
 // Leslie: add button for AddExpense ExpenseForm
 // CP: Added ManageExpense
+import { LogBox } from 'react-native';
 
-import { useContext, useLayoutEffect } from "react";
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
+import { useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import ExpensesForm from "../components/ExpensesInput/ExpensesForm";
@@ -26,7 +31,7 @@ function ManageExpense({ route, navigation }) {
 
   const selectedExpense = expenses.find((exp) => exp.id === editedExpenseId);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
     });
@@ -71,7 +76,8 @@ function ManageExpense({ route, navigation }) {
         <View style={styles.deleteContainer}>
           <IconButton
             icon="trash"
-            color={GlobalColors.error500}
+            // color={GlobalColors.error500}
+            color={GlobalColors.primary50}
             size={38}
             onPress={deleteExpenseHandler}
           />
