@@ -37,20 +37,21 @@ export default ExpensesSummary;
 const styles = StyleSheet.create({
   container: {
     padding: 8,
-    backgroundColor: GlobalColors.primary50,
+    backgroundColor: GlobalColors.primary55,
+    // backgroundColor: GlobalColors.accent500,
     borderRadius: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   period: {
-    fontSize: 12,
-    color: GlobalColors.primary400,
+    fontSize: 18,
+    color: GlobalColors.primary60,
   },
   sum: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: GlobalColors.primary500,
+    color: GlobalColors.primary60,
   },
 });
 >>>>>>> cb9c1de6a18624ea457215db4455adeec7c10864

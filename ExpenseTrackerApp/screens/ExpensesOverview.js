@@ -17,7 +17,8 @@ function ExpensesOverview() {
       screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: GlobalColors.primary500 },
         headerTintColor: GlobalColors.primary100 ,
-        tabBarStyle: { backgroundColor: GlobalColors.primary500 },
+        tabBarStyle: { backgroundColor: GlobalColors.primary700 },
+        // tabBarActiveTintColor: GlobalColors.primary55,
         tabBarActiveTintColor: GlobalColors.accent500,
         headerRight: ({ tintColor }) => (
           <IconButton
@@ -37,8 +38,9 @@ function ExpensesOverview() {
         options={{
           title: "Recent Expenses",
           tabBarLabel: "Recent",
+          // tabBarLabelStyle: { fontSize: 15 },
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="hourglass" size={size} color={color} />
+            <Ionicons name="time-sharp" size={size} color={color} />
           ),
         }}
       />
@@ -48,8 +50,9 @@ function ExpensesOverview() {
         options={{
           title: "All Expenses",
           tabBarLabel: "All",
+          // tabBarLabelStyle: { fontSize: 15 },
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" size={size} color={color} />
+            <Ionicons name="archive-sharp" size={size} color={color} />
           ),
         }}
       />

@@ -42,11 +42,12 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalColors.primary100,
     color: GlobalColors.primary800,
     padding: 8,
-    borderRadius: 4,
+    borderRadius: 8,
+    minWidth : "49%"
   },
 
   inputMultiline: {
-    minHeight: 150,
+    minHeight: 100,
     textAlignVertical: "top",
   },
 

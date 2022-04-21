@@ -27,12 +27,15 @@ import ExpensesSummary from './ExpensesSummary';
 function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
   const [pickerValue, setPickerValue] = useState(null)
   const [pickerItems, setPickerItems] = useState([])
-  const [filtered, setFiltered] = useState([...expenses]);
+  const [filtered, setFiltered] = useState([...expenses])
+
+  // console.log(expenses)
+  // console.log(filtered)
 
   let content = <Text style={styles.infoText}>{fallbackText}</Text>;
 
   if (expenses.length > 0) {
-    content = <ExpensesList expenses={expenses} />;
+    content = <ExpensesList expenses={filtered} />;
   }
   
   // Filters out category items into an array for dropdown menu
@@ -44,13 +47,20 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
     });
     const unique = [...new Set(array)];
     setPickerItems(unique)
+
   }, [expenses.length])
 
   // Updates selected category item from dropdown menu
   
   useEffect(() => {
     console.log('ExpensesOutput: pickerValue', pickerValue);
-    const filteredCategoryItem = expenses.filter(expense => expense.category === pickerValue)
+
+    const filteredCategoryItems = expenses.filter((expense) => {
+      return expense.category === pickerValue;
+    });
+
+    console.log(filteredCategoryItems)
+    setFiltered([...filteredCategoryItems])
   }, [pickerValue])
 
   return (

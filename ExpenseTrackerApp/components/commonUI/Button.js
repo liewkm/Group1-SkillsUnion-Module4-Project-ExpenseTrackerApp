@@ -29,7 +29,7 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     padding: 6,
-    borderRadius: 4,
+    borderRadius: 16,
     backgroundColor: GlobalColors.primary200,
   },
   text: {
