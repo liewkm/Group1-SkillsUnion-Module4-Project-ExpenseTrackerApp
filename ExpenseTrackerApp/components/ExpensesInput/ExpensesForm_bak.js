@@ -2,16 +2,8 @@
   Expense input form 
 ----*/
 import { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Platform,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import PickerSelect from "react-native-picker-select";
 
 import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
@@ -24,16 +16,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validDescp, setValidDescp] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
 
-  const [date, setDate] = useState(new Date(Date.now()));
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  // const [text, setText] = useState(["Empty"]); // outputscreen
-
-  const [category, setCategory] = useState("");
-
   const [inputs, setInputs] = useState({
-    date: defaultValues
-      ? getFormattedDate(defaultValues.date)
-      : getFormattedDate(date),
+    date: defaultValues ? getFormattedDate(defaultValues.date) : "",
     amount: defaultValues ? defaultValues.amount.toString() : "",
     description: defaultValues ? defaultValues.description : "",
   });
@@ -43,6 +27,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       return { ...current, [inputType]: enterValue };
     });
   };
+
   // console.log("Obj inputs", inputs);
 
   const submitHandler = () => {
@@ -60,63 +45,36 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     setValidAmount(validAmount);
     setValidDate(validDate);
     setValidDescp(validDescp);
-    // console.log(validDate, validAmount, validDescp);
+
+    console.log(validDate, validAmount, validDescp);
 
     if (validDate && validAmount && validDescp) {
+      console.log("Obj onSubmit", data);
       onSubmit(data);
-      // console.log("Obj onSubmit", data);
     } else {
       // Alert.alert('Invalid Entry, Please Check Entry Again!')
       setFormNotValid(true);
     }
   };
 
-  ///////////////// DatePicker
-  const showMode = () => setShowDatePicker(true);
-
-  const onChangeDatePicker = (event, selectedDate) => {
-    if (Platform.OS === "android") {
-      setShowDatePicker(false);
-    }
-    const currentDate = selectedDate || date;
-
-    setDate(currentDate);
-    let tempDate = getFormattedDate(currentDate);
-
-    setInputs((current) => {
-      return { ...current, ["date"]: tempDate };
-    });
-
-    // setText(tempDate); // outputscreen
-    // console.log("tempDate, date: ", tempDate, date); // outputscreen
-  };
-
-  ///////////////// PickerSelect
-
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Expense</Text>
-      {/* <Button style={styles.button} onPress={() => showMode()}>
-        Date Picker
-      </Button> */}
+
       <View style={styles.row}>
-        <Pressable onPress={() => showMode()}>
-          <Input
-            style={styles.rowInput}
-            inputLabel="Date"
-            inputConfig={{
-              // placeholder: "YYYY-MM-DD",
-              maxLength: 10,
-              showSoftInputOnFocus: false, // dismiss kkeyboard
-              keyboardType: "number-pad",
-              onChangeText: inputsChangeHandler.bind(this, "date"),
-              value: inputs.date,
-              onPressIn: () => showMode(), // allows input area pressable
-            }}
-            invalid={!validDate}
-          />
-        </Pressable>
+        <Input
+          style={styles.rowInput}
+          inputLabel="Date"
+          inputConfig={{
+            placeholder: "YYYY-MM-DD",
+            maxLength: 10,
+            keyboardType: "number-pad",
+            onChangeText: inputsChangeHandler.bind(this, "date"),
+            value: inputs.date,
+          }}
+          invalid={!validDate}
+        />
         <Input
           style={styles.rowInput}
           inputLabel="Amount"
@@ -128,37 +86,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           invalid={!validAmount}
         />
       </View>
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode={"date"}
-          display="default"
-          onChange={onChangeDatePicker}
-        />
-      )}
-
-      {/* display DatePicker input */}
-      {/* <Text style={styles.title}>{text}</Text> */}
-
-      <PickerSelect
-        onValueChange={(category) => setCategory(category)}
-        placeholder={{
-          label: "Select Expense Category",
-          value: null,
-          color: "black",
-        }}
-        items={[
-          { label: "Clothing", value: "Clothing" },
-          { label: "Computing Hardware", value: "Computing Hardware" },
-          { label: "Food", value: "Food" },
-          { label: "Hobby", value: "Hobby" },
-          { label: "Household", value: "Household" },
-          { label: "Stationary", value: "Stationary" },
-          { label: "Social", value: "Social" },
-          { label: "Transport", value: "Transport" },
-        ]}
-        style={pickerSelectStyles}
-      />
 
       <Input
         inputLabel="Description"
@@ -169,6 +96,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         }}
         invalid={!validDescp}
       />
+
       <View style={styles.buttonRow}>
         <Button style={styles.button} onPress={onCancel} mode="flat">
           CANCEL
@@ -177,6 +105,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           {submitBtnLabel}
         </Button>
       </View>
+
       {formNotValid && (
         <Text style={styles.errorOutput}>
           Invalid Entry, Please Check Entry Again! {formNotValid}
@@ -187,33 +116,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 }
 
 export default ExpensesForm;
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: GlobalColors.primary100,
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    // backfaceVisibility: "visible",
-    marginTop: 16,
-
-    // backgroundColor: GlobalColors.primary100,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: GlobalColors.primary100,
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});
 
 const styles = StyleSheet.create({
   container: { marginTop: 40 },
