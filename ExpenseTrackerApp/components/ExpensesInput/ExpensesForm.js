@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 // import PickerSelect from "react-native-picker-select";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 
 import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
@@ -23,13 +23,14 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validAmount, setValidAmount] = useState(true);
   const [validDate, setValidDate] = useState(true);
   const [validDescp, setValidDescp] = useState(true);
+  const [validCategory, setValidCategory] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
 
   const [date, setDate] = useState(new Date(Date.now()));
   const [showDatePicker, setShowDatePicker] = useState(false);
   // const [text, setText] = useState(["Empty"]); // outputscreen
 
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
 
   const [inputs, setInputs] = useState({
     date: defaultValues
@@ -37,6 +38,9 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       : getFormattedDate(date),
     amount: defaultValues ? defaultValues.amount.toString() : "",
     description: defaultValues ? defaultValues.description : "",
+    // category: defaultValues ? defaultValues.category : category,
+    category: defaultValues ? defaultValues.category : "",
+    
   });
 
   const inputsChangeHandler = (inputType, enterValue) => {
@@ -45,32 +49,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     });
   };
   // console.log("Obj inputs", inputs);
-
-  const submitHandler = () => {
-    setFormNotValid(false);
-    const data = {
-      date: new Date(inputs.date),
-      amount: +inputs.amount, // + converts to number
-      description: inputs.description,
-    };
-
-    const validAmount = !isNaN(data.amount) && data.amount > 0;
-    const validDate = data.date.toString() !== "Invalid Date";
-    const validDescp = data.description.trim().length > 0;
-
-    setValidAmount(validAmount);
-    setValidDate(validDate);
-    setValidDescp(validDescp);
-    // console.log(validDate, validAmount, validDescp);
-
-    if (validDate && validAmount && validDescp) {
-      onSubmit(data);
-      // console.log("Obj onSubmit", data);
-    } else {
-      // Alert.alert('Invalid Entry, Please Check Entry Again!')
-      setFormNotValid(true);
-    }
-  };
 
   ///////////////// DatePicker
   const showMode = () => setShowDatePicker(true);
@@ -92,7 +70,37 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     // console.log("tempDate, date: ", tempDate, date); // outputscreen
   };
 
-  ///////////////// PickerSelect
+  const submitHandler = () => {
+    setFormNotValid(false);
+
+    const data = {
+      date: new Date(inputs.date),
+      amount: +inputs.amount, // + converts to number
+      description: inputs.description,
+      category: inputs.category,
+    };
+
+    console.log("******** inputs object: ", inputs);
+
+    const validAmount = !isNaN(data.amount) && data.amount > 0;
+    const validDate = data.date.toString() !== "Invalid Date";
+    const validDescp = data.description.trim().length > 0;
+    const validCategory = data.category.trim().length > 0;
+
+    setValidAmount(validAmount);
+    setValidDate(validDate);
+    setValidDescp(validDescp);
+    setValidCategory(validCategory);
+    // console.log(validDate, validAmount, validDescp, validCategory);
+
+    if (validDate && validAmount && validDescp && validCategory) {
+      onSubmit(data);
+      // console.log("Obj onSubmit", data);
+    } else {
+      // Alert.alert('Invalid Entry, Please Check Entry Again!')
+      setFormNotValid(true);
+    }
+  };
 
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
@@ -139,16 +147,22 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       )}
 
       {/* display DatePicker input */}
-      {/* <Text style={styles.title}>{text}</Text> */}
+
       <Text style={styles.label}>Category</Text>
       <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={category}
+        <Picker 
+          selectedValue={inputs.category}
           style={styles.picker}
-          dropdownIconColor={GlobalColors.primary800}
-          prompt={'Please select category:'}
-          onValueChange={(category) => setCategory(category)}
+          dropdownIconColor={GlobalColors.primary100}
+          // prompt={'Please select category:'}
+          onValueChange={(itemValue) => {
+            // setCategory(itemValue);
+            setInputs((current) => {
+              return { ...current, ["category"]: itemValue };
+            });
+          }}
         >
+          <Picker.Item label="Please select category:" enabled={false} />
           <Picker.Item label="Clothing" value="Clothing" />
           <Picker.Item label="Computing Hardware" value="Computing Hardware" />
           <Picker.Item label="Food" value="Food" />
@@ -159,26 +173,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           <Picker.Item label="Transport" value="Transport" />
         </Picker>
       </View>
-
-      {/* <PickerSelect
-        onValueChange={(category) => setCategory(category)}
-        placeholder={{
-          label: "Select Expense Category",
-          value: null,
-          color: "black",
-        }}
-        items={[
-          { label: "Clothing", value: "Clothing" },
-          { label: "Computing Hardware", value: "Computing Hardware" },
-          { label: "Food", value: "Food" },
-          { label: "Hobby", value: "Hobby" },
-          { label: "Household", value: "Household" },
-          { label: "Stationary", value: "Stationary" },
-          { label: "Social", value: "Social" },
-          { label: "Transport", value: "Transport" },
-        ]}
-        style={pickerSelectStyles}
-      /> */}
 
       <Input
         inputLabel="Description"
@@ -199,42 +193,17 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       </View>
       {formNotValid && (
         <Text style={styles.errorOutput}>
-          Invalid Entry, Please Check Entry Again! {formNotValid}
+          Invalid Entry, Please Check Entry Again!
         </Text>
+      )}
+      {!validCategory && (
+        <Text style={styles.errorOutput}>Please Choose a Category!</Text>
       )}
     </View>
   );
 }
 
 export default ExpensesForm;
-
-// const pickerSelectStyles = StyleSheet.create({
-//   inputIOS: {
-//     fontSize: 16,
-//     paddingVertical: 12,
-//     paddingHorizontal: 10,
-//     borderWidth: 1,
-//     borderColor: "gray",
-//     borderRadius: 4,
-//     color: GlobalColors.primary100,
-//     paddingRight: 30, // to ensure the text is never behind the icon
-//   },
-//   inputAndroid: {
-//     // backfaceVisibility: "visible",
-//     marginTop: 16,
-
-//     // backgroundColor: GlobalColors.primary100,
-//     fontSize: 16,
-//     paddingHorizontal: 10,
-//     paddingVertical: 4,
-//     borderWidth: 0.5,
-//     borderColor: "purple",
-//     borderRadius: 8,
-//     color: GlobalColors.primary100,
-//     paddingRight: 30, // to ensure the text is never behind the icon
-//   },
-// });
-
 const styles = StyleSheet.create({
   container: { marginTop: 10 },
   row: {
