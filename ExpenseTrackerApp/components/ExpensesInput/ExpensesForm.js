@@ -2,7 +2,14 @@
   Expense input form 
 ----*/
 import { useState } from "react";
-import { Platform, View, Text, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Platform,
+  Alert,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { GlobalColors } from "../../utilities/colors";
@@ -17,10 +24,32 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [formNotValid, setFormNotValid] = useState(false);
 
   ///////////////// DatePicker
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState();
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState(["Empty"]);
+  const [date, setDate] = useState(new Date(Date.now()));
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [text, setText] = useState(["Empty"]); // outputscreen
+  ///////////////// DatePicker
+
+  ///////////////// DatePicker
+  const showMode = () => setShowDatePicker(true);
+
+  const onChangeDatePicker = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      setShowDatePicker(false);
+    }
+
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+
+    let tempDate = getFormattedDate(currentDate);
+    setInputs((current) => {
+      return { ...current, ["date"]: tempDate };
+    });
+
+    setText(tempDate); // outputscreen
+    console.log("tempDate, date: ", tempDate, date); // outputscreen
+  };
+
   ///////////////// DatePicker
 
   const [inputs, setInputs] = useState({
@@ -65,64 +94,30 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     }
   };
 
-  ///////////////// DatePicker
-  const onChange = (event, selectedDate) => {
-    // console.log("\nevent: ", e);
-    setShow(false);
-    const currentDate = selectedDate || date;
-
-    let tempDate = getFormattedDate(currentDate);
-
-    setInputs((current) => {
-      return { ...current, ["date"]: tempDate };
-    });
-
-    setDate(currentDate);
-
-    setText(tempDate);
-    console.log("tempDate, date: ", tempDate, date);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-  ///////////////// DatePicker
-
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Expense</Text>
-
-      <Button style={styles.button} onPress={() => showMode("date")}>
+      {/* <Button style={styles.button} onPress={() => showMode()}>
         Date Picker
-      </Button>
-
-      {show && (
-        <DateTimePicker
-          // testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          display="default"
-          onChange={onChange}
-        />
-      )}
-
-      <Text style={styles.title}>{text}</Text>
-
+      </Button> */}
       <View style={styles.row}>
-        <Input
-          style={styles.rowInput}
-          inputLabel="Date"
-          inputConfig={{
-            // placeholder: "YYYY-MM-DD",
-            maxLength: 10,
-            keyboardType: "number-pad",
-            onChangeText: inputsChangeHandler.bind(this, "date"),
-            value: inputs.date,
-          }}
-          invalid={!validDate}
-        />
+        <Pressable onPress={() => showMode()} >
+          <Input
+            style={styles.rowInput}
+            inputLabel="Date"
+            inputConfig={{
+              // placeholder: "YYYY-MM-DD",
+              maxLength: 10,
+              showSoftInputOnFocus: false, // dismiss kkeyboard
+              keyboardType: "number-pad",
+              onChangeText: inputsChangeHandler.bind(this, "date"),
+              value: inputs.date,
+              onPressIn: () => showMode() // allows input area pressable
+            }}
+            invalid={!validDate}
+          />
+        </Pressable>
         <Input
           style={styles.rowInput}
           inputLabel="Amount"
@@ -134,7 +129,18 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           invalid={!validAmount}
         />
       </View>
+      {showDatePicker && (
+        <DateTimePicker
+          value={date}
+          mode={"date"}
+          display="default"
+          onChange={onChangeDatePicker}
+        />
+      )}
 
+      {/* display DatePicker input */}
+      {/* <Text style={styles.title}>{text}</Text> */}
+      
       <Input
         inputLabel="Description"
         inputConfig={{
@@ -144,7 +150,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         }}
         invalid={!validDescp}
       />
-
       <View style={styles.buttonRow}>
         <Button style={styles.button} onPress={onCancel} mode="flat">
           CANCEL
@@ -153,7 +158,6 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           {submitBtnLabel}
         </Button>
       </View>
-
       {formNotValid && (
         <Text style={styles.errorOutput}>
           Invalid Entry, Please Check Entry Again! {formNotValid}
