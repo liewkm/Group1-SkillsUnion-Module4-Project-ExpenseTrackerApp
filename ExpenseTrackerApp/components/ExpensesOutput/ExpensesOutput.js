@@ -44,7 +44,7 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
     const unique = [...new Set(array)];
     setPickerItems(unique)
 
-  }, [expenses.length])
+  }, [expenses])
 
   // Updates selected category item from dropdown menu
   
@@ -57,11 +57,11 @@ function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
 
     console.log(filteredCategoryItems)
     setFiltered([...filteredCategoryItems])
-  }, [pickerValue])
+  }, [pickerValue, expenses])
 
   return (
     <View style={styles.container}>
-      <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+      <ExpensesSummary expenses={filtered} periodName={expensesPeriod} />
       <Picker
         selectedValue={pickerValue}
         style={{color: 'white'}}

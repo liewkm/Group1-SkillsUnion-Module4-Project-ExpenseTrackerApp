@@ -30,7 +30,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   // const [text, setText] = useState(["Empty"]); // outputscreen
 
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
 
   const [inputs, setInputs] = useState({
     date: defaultValues
@@ -38,7 +38,9 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       : getFormattedDate(date),
     amount: defaultValues ? defaultValues.amount.toString() : "",
     description: defaultValues ? defaultValues.description : "",
-    category: defaultValues ? defaultValues.category : category,
+    // category: defaultValues ? defaultValues.category : category,
+    category: defaultValues ? defaultValues.category : "",
+    
   });
 
   const inputsChangeHandler = (inputType, enterValue) => {
@@ -143,32 +145,34 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           onChange={onChangeDatePicker}
         />
       )}
-      {/* display DatePicker input */}
-      {/* <Text style={styles.title}>{text}</Text> */}
 
-      <Picker
-        selectedValue={category}
-        style={{ color: GlobalColors.primary100 }}
-        dropdownIconColor={GlobalColors.primary100}
-        // prompt={'Please select category:'}
-        onValueChange={(itemValue) => {
-          setCategory(itemValue);
-          setInputs((current) => {
-            return { ...current, ["category"]: itemValue };
-          });
-        }}
-      >
-        <Picker.Item label="Please select category:" enabled={false} />
-        <Picker.Item label="Clothing" value="Clothing" />
-        <Picker.Item label="Computing Hardware" value="Computing Hardware" />
-        <Picker.Item label="Food" value="Food" />
-        <Picker.Item label="Hobby" value="Hobby" />
-        <Picker.Item label="Household" value="Household" />
-        <Picker.Item label="Stationary" value="Stationary" />
-        <Picker.Item label="Social" value="Social" />
-        <Picker.Item label="Transport" value="Transport" />
-      </Picker>
-=
+      {/* display DatePicker input */}
+
+      <Text style={styles.label}>Category</Text>
+      <View style={styles.pickerContainer}>
+        <Picker 
+          selectedValue={inputs.category}
+          style={styles.picker}
+          dropdownIconColor={GlobalColors.primary100}
+          // prompt={'Please select category:'}
+          onValueChange={(itemValue) => {
+            // setCategory(itemValue);
+            setInputs((current) => {
+              return { ...current, ["category"]: itemValue };
+            });
+          }}
+        >
+          <Picker.Item label="Please select category:" enabled={false} />
+          <Picker.Item label="Clothing" value="Clothing" />
+          <Picker.Item label="Computing Hardware" value="Computing Hardware" />
+          <Picker.Item label="Food" value="Food" />
+          <Picker.Item label="Hobby" value="Hobby" />
+          <Picker.Item label="Household" value="Household" />
+          <Picker.Item label="Stationary" value="Stationary" />
+          <Picker.Item label="Social" value="Social" />
+          <Picker.Item label="Transport" value="Transport" />
+        </Picker>
+      </View>
 
       <Input
         inputLabel="Description"
