@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
+import PickerSelect from "react-native-picker-select";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function App () {
@@ -12,7 +12,10 @@ export default function App () {
                     "Please select a language"
                 }
             </Text>
-            <RNPickerSelect
+
+            {/* PickerSelect */}
+
+            <PickerSelect
                 onValueChange={(language) => setLanguage(language)}
                 items={[
                     { label: "JavaScript", value: "JavaScript" },
@@ -24,6 +27,8 @@ export default function App () {
                 ]}
               style={pickerSelectStyles}
             />
+
+            
         </View>
     );
 }

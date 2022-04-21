@@ -11,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import PickerSelect from "react-native-picker-select";
 
 import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
@@ -23,34 +24,11 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
   const [validDescp, setValidDescp] = useState(true);
   const [formNotValid, setFormNotValid] = useState(false);
 
-  ///////////////// DatePicker
   const [date, setDate] = useState(new Date(Date.now()));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  // const [text, setText] = useState(["Empty"]); // outputscreen
 
-  const [text, setText] = useState(["Empty"]); // outputscreen
-  ///////////////// DatePicker
-
-  ///////////////// DatePicker
-  const showMode = () => setShowDatePicker(true);
-
-  const onChangeDatePicker = (event, selectedDate) => {
-    if (Platform.OS === "android") {
-      setShowDatePicker(false);
-    }
-
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-
-    let tempDate = getFormattedDate(currentDate);
-    setInputs((current) => {
-      return { ...current, ["date"]: tempDate };
-    });
-
-    setText(tempDate); // outputscreen
-    console.log("tempDate, date: ", tempDate, date); // outputscreen
-  };
-
-  ///////////////// DatePicker
+  const [category, setCategory] = useState("");
 
   const [inputs, setInputs] = useState({
     date: defaultValues
@@ -82,17 +60,38 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     setValidAmount(validAmount);
     setValidDate(validDate);
     setValidDescp(validDescp);
-
-    console.log(validDate, validAmount, validDescp);
+    // console.log(validDate, validAmount, validDescp);
 
     if (validDate && validAmount && validDescp) {
-      console.log("Obj onSubmit", data);
       onSubmit(data);
+      // console.log("Obj onSubmit", data);
     } else {
       // Alert.alert('Invalid Entry, Please Check Entry Again!')
       setFormNotValid(true);
     }
   };
+
+  ///////////////// DatePicker
+  const showMode = () => setShowDatePicker(true);
+
+  const onChangeDatePicker = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      setShowDatePicker(false);
+    }
+    const currentDate = selectedDate || date;
+
+    setDate(currentDate);
+    let tempDate = getFormattedDate(currentDate);
+
+    setInputs((current) => {
+      return { ...current, ["date"]: tempDate };
+    });
+
+    // setText(tempDate); // outputscreen
+    // console.log("tempDate, date: ", tempDate, date); // outputscreen
+  };
+
+  ///////////////// PickerSelect
 
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
@@ -102,7 +101,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         Date Picker
       </Button> */}
       <View style={styles.row}>
-        <Pressable onPress={() => showMode()} >
+        <Pressable onPress={() => showMode()}>
           <Input
             style={styles.rowInput}
             inputLabel="Date"
@@ -113,7 +112,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
               keyboardType: "number-pad",
               onChangeText: inputsChangeHandler.bind(this, "date"),
               value: inputs.date,
-              onPressIn: () => showMode() // allows input area pressable
+              onPressIn: () => showMode(), // allows input area pressable
             }}
             invalid={!validDate}
           />
@@ -140,7 +139,23 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
       {/* display DatePicker input */}
       {/* <Text style={styles.title}>{text}</Text> */}
-      
+
+      <PickerSelect
+        onValueChange={(category) => setCategory(category)}
+        placeholder={{ label: "Select Expense Category", value: null }}
+        items={[
+          { label: "Clothing", value: "Clothing" },
+          { label: "Computing Hardware", value: "Computing Hardware" },
+          { label: "Food", value: "Food" },
+          { label: "Hobby", value: "Hobby" },
+          { label: "Household", value: "Household" },
+          { label: "Stationary", value: "Stationary" },
+          { label: "Social", value: "Social" },
+          { label: "Transport", value: "Transport" },
+        ]}
+        style={pickerSelectStyles}
+      />
+
       <Input
         inputLabel="Description"
         inputConfig={{
@@ -168,6 +183,29 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 }
 
 export default ExpensesForm;
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "white",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "white",
+    borderRadius: 8,
+    color: "white",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
 
 const styles = StyleSheet.create({
   container: { marginTop: 40 },
