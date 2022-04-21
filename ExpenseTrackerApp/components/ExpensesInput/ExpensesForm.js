@@ -140,23 +140,25 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
       {/* display DatePicker input */}
       {/* <Text style={styles.title}>{text}</Text> */}
-      <Picker
-        selectedValue={category}
-        style={{color: 'white'}}
-        dropdownIconColor={'white'}
-        prompt={'Please select category:'}
-        onValueChange={(category) => setCategory(category)}
-      >
-        <Picker.Item label="Clothing" value="Clothing" />
-        <Picker.Item label="Computing Hardware" value="Computing Hardware" />
-        <Picker.Item label="Food" value="Food" />
-        <Picker.Item label="Hobby" value="Hobby" />
-        <Picker.Item label="Household" value="Household" />
-        <Picker.Item label="Stationary" value="Stationary" />
-        <Picker.Item label="Social" value="Social" />
-        <Picker.Item label="Transport" value="Transport" />
-      </Picker>    
-
+      <Text style={styles.label}>Category</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={category}
+          style={styles.picker}
+          dropdownIconColor={GlobalColors.primary800}
+          prompt={'Please select category:'}
+          onValueChange={(category) => setCategory(category)}
+        >
+          <Picker.Item label="Clothing" value="Clothing" />
+          <Picker.Item label="Computing Hardware" value="Computing Hardware" />
+          <Picker.Item label="Food" value="Food" />
+          <Picker.Item label="Hobby" value="Hobby" />
+          <Picker.Item label="Household" value="Household" />
+          <Picker.Item label="Stationary" value="Stationary" />
+          <Picker.Item label="Social" value="Social" />
+          <Picker.Item label="Transport" value="Transport" />
+        </Picker>
+      </View>
 
       {/* <PickerSelect
         onValueChange={(category) => setCategory(category)}
@@ -206,35 +208,35 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
 export default ExpensesForm;
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: GlobalColors.primary100,
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    // backfaceVisibility: "visible",
-    marginTop: 16,
+// const pickerSelectStyles = StyleSheet.create({
+//   inputIOS: {
+//     fontSize: 16,
+//     paddingVertical: 12,
+//     paddingHorizontal: 10,
+//     borderWidth: 1,
+//     borderColor: "gray",
+//     borderRadius: 4,
+//     color: GlobalColors.primary100,
+//     paddingRight: 30, // to ensure the text is never behind the icon
+//   },
+//   inputAndroid: {
+//     // backfaceVisibility: "visible",
+//     marginTop: 16,
 
-    // backgroundColor: GlobalColors.primary100,
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: GlobalColors.primary100,
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});
+//     // backgroundColor: GlobalColors.primary100,
+//     fontSize: 16,
+//     paddingHorizontal: 10,
+//     paddingVertical: 4,
+//     borderWidth: 0.5,
+//     borderColor: "purple",
+//     borderRadius: 8,
+//     color: GlobalColors.primary100,
+//     paddingRight: 30, // to ensure the text is never behind the icon
+//   },
+// });
 
 const styles = StyleSheet.create({
-  container: { marginTop: 40 },
+  container: { marginTop: 10 },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -263,4 +265,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: GlobalColors.error50,
   },
+  label: {
+    fontSize: 16,
+    marginTop: 8,
+    marginLeft: 8,
+    color: GlobalColors.primary100,
+  },
+  picker: {
+    fontSize: 16,
+    backgroundColor: GlobalColors.primary100,
+    color: GlobalColors.primary800,
+    padding: 8,
+    borderRadius: 8,
+    minWidth : "49%"
+  },
+  pickerContainer: {
+    borderRadius: 8,
+    borderWidth: 0,
+    margin: 8,
+    overflow: 'hidden',
+    minWidth : "49%"
+  },
+
 });

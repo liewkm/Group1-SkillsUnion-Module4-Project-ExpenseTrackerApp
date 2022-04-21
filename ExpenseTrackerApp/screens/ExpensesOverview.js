@@ -18,8 +18,8 @@ function ExpensesOverview() {
         headerStyle: { backgroundColor: GlobalColors.primary500 },
         headerTintColor: GlobalColors.primary100 ,
         tabBarStyle: { backgroundColor: GlobalColors.primary700 },
-        tabBarActiveTintColor: GlobalColors.primary55,
-        // tabBarActiveTintColor: GlobalColors.accent500,
+        // tabBarActiveTintColor: GlobalColors.primary55,
+        tabBarActiveTintColor: GlobalColors.accent500,
         headerRight: ({ tintColor }) => (
           <IconButton
             icon="add"
