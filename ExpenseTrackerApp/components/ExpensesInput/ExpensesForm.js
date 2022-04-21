@@ -142,7 +142,11 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
       <PickerSelect
         onValueChange={(category) => setCategory(category)}
-        placeholder={{ label: "Select Expense Category", value: null }}
+        placeholder={{
+          label: "Select Expense Category",
+          value: null,
+          color: "black",
+        }}
         items={[
           { label: "Clothing", value: "Clothing" },
           { label: "Computing Hardware", value: "Computing Hardware" },
@@ -190,19 +194,23 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: "gray",
     borderRadius: 4,
-    color: "black",
+    color: GlobalColors.primary100,
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
+    // backfaceVisibility: "visible",
+    marginTop: 16,
+
+    // backgroundColor: GlobalColors.primary100,
     fontSize: 16,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 4,
     borderWidth: 0.5,
-    borderColor: "white",
+    borderColor: "purple",
     borderRadius: 8,
-    color: "white",
+    color: GlobalColors.primary100,
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
