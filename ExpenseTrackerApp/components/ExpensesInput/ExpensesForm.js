@@ -168,6 +168,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         <Picker.Item label="Social" value="Social" />
         <Picker.Item label="Transport" value="Transport" />
       </Picker>
+=
 
       <Input
         inputLabel="Description"
@@ -199,9 +200,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 }
 
 export default ExpensesForm;
-
 const styles = StyleSheet.create({
-  container: { marginTop: 40 },
+  container: { marginTop: 10 },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -230,4 +230,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: GlobalColors.error50,
   },
+  label: {
+    fontSize: 16,
+    marginTop: 8,
+    marginLeft: 8,
+    color: GlobalColors.primary100,
+  },
+  picker: {
+    fontSize: 16,
+    backgroundColor: GlobalColors.primary100,
+    color: GlobalColors.primary800,
+    padding: 8,
+    borderRadius: 8,
+    minWidth : "49%"
+  },
+  pickerContainer: {
+    borderRadius: 8,
+    borderWidth: 0,
+    margin: 8,
+    overflow: 'hidden',
+    minWidth : "49%"
+  },
+
 });
