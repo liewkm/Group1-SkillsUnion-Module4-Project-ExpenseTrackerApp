@@ -71,6 +71,7 @@ function ManageExpense({ route, navigation }) {
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
         defaultValues={selectedExpense}
+        navigation={navigation}
       />
       {isEditing && (
         <View style={styles.deleteContainer}>
