@@ -18,8 +18,10 @@ import { GlobalColors } from "../../utilities/colors";
 import { getFormattedDate } from "../../utilities/helpers.js";
 import Button from "../commonUI/Button.js";
 import Input from "./Input";
+import IconButton from "../commonUI/IconButton";
 
-function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
+function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues, navigation }) {
+  console.log('ExpensesForm navigation:', navigation );
   const [validAmount, setValidAmount] = useState(true);
   const [validDate, setValidDate] = useState(true);
   const [validDescp, setValidDescp] = useState(true);
@@ -102,6 +104,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
     }
   };
 
+  
   // console.log("submitBtnLabel: ", submitBtnLabel);
   return (
     <View style={styles.container}>
@@ -113,13 +116,13 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         <Pressable onPress={() => showMode()}>
           <Input
             style={styles.rowInput}
-            inputLabel="Date"
+            inputLabel='Date'
             inputConfig={{
               // placeholder: "YYYY-MM-DD",
               maxLength: 10,
               showSoftInputOnFocus: false, // dismiss kkeyboard
-              keyboardType: "number-pad",
-              onChangeText: inputsChangeHandler.bind(this, "date"),
+              keyboardType: 'number-pad',
+              onChangeText: inputsChangeHandler.bind(this, 'date'),
               value: inputs.date,
               onPressIn: () => showMode(), // allows input area pressable
             }}
@@ -128,10 +131,10 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
         </Pressable>
         <Input
           style={styles.rowInput}
-          inputLabel="Amount"
+          inputLabel='Amount'
           inputConfig={{
-            keyboardType: "decimal-pad",
-            onChangeText: inputsChangeHandler.bind(this, "amount"),
+            keyboardType: 'decimal-pad',
+            onChangeText: inputsChangeHandler.bind(this, 'amount'),
             value: inputs.amount,
           }}
           invalid={!validAmount}
@@ -140,8 +143,8 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
       {showDatePicker && (
         <DateTimePicker
           value={date}
-          mode={"date"}
-          display="default"
+          mode={'date'}
+          display='default'
           onChange={onChangeDatePicker}
         />
       )}
@@ -150,7 +153,7 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
 
       <Text style={styles.label}>Category</Text>
       <View style={styles.pickerContainer}>
-        <Picker 
+        <Picker
           selectedValue={inputs.category}
           style={styles.picker}
           dropdownIconColor={GlobalColors.primary100}
@@ -158,35 +161,40 @@ function ExpensesForm({ onCancel, onSubmit, submitBtnLabel, defaultValues }) {
           onValueChange={(itemValue) => {
             // setCategory(itemValue);
             setInputs((current) => {
-              return { ...current, ["category"]: itemValue };
+              return { ...current, ['category']: itemValue };
             });
           }}
         >
-          <Picker.Item label="Please select category:" enabled={false} />
-          <Picker.Item label="Clothing" value="Clothing" />
-          <Picker.Item label="Computing Hardware" value="Computing Hardware" />
-          <Picker.Item label="Food" value="Food" />
-          <Picker.Item label="Hobby" value="Hobby" />
-          <Picker.Item label="Household" value="Household" />
-          <Picker.Item label="Stationary" value="Stationary" />
-          <Picker.Item label="Social" value="Social" />
-          <Picker.Item label="Transport" value="Transport" />
+          <Picker.Item label='Please select category:' enabled={false} />
+          <Picker.Item label='Clothing' value='Clothing' />
+          <Picker.Item label='Computing Hardware' value='Computing Hardware' />
+          <Picker.Item label='Food' value='Food' />
+          <Picker.Item label='Hobby' value='Hobby' />
+          <Picker.Item label='Household' value='Household' />
+          <Picker.Item label='Stationary' value='Stationary' />
+          <Picker.Item label='Social' value='Social' />
+          <Picker.Item label='Transport' value='Transport' />
         </Picker>
       </View>
 
       <Input
-        inputLabel="Description"
+        inputLabel='Description'
         inputConfig={{
           multiline: true,
-          onChangeText: inputsChangeHandler.bind(this, "description"),
+          onChangeText: inputsChangeHandler.bind(this, 'description'),
           value: inputs.description,
         }}
         invalid={!validDescp}
       />
       <View style={styles.buttonRow}>
-        <Button style={styles.button} onPress={onCancel} mode="flat">
+        <Button style={styles.button} onPress={onCancel} mode='flat'>
           CANCEL
         </Button>
+        <IconButton style={styles.button} onPress={() => navigation.navigate('BarcodeScanner')}
+          icon='camera'
+          color={GlobalColors.primary50}
+          size={38}
+        />
         <Button style={styles.button} onPress={submitHandler}>
           {submitBtnLabel}
         </Button>
@@ -223,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    minWidth: 130,
+    minWidth: 100,
     marginHorizontal: 16,
     marginVertical: 8,
   },
